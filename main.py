@@ -54,17 +54,26 @@ x_val = f_interp(desired_y)
 
 print(f"x-value for y={desired_y}: {x_val}")
 
-
-'''
-plt.semilogx(w, phase)
-plt.xlabel('Frequency [rad/s]')
-plt.ylabel('Phase [degrees]')
-plt.xlim(0, 10)
-plt.ylim(-200, 90)
-plt.grid(True, which='both',)
-'''
-
-
 plt.show()
+
+import numpy as np
+from scipy.optimize import root_scalar
+
+# Target value in radians (-45 degrees)
+target_value_final = -np.pi / 4
+
+# Define the function based on the given equation
+def func_final(x):
+    return np.arctan(2*x) - np.pi/2 - np.arctan(x/2) - 2*np.arctan(x/4) - target_value_final
+
+# Solve using Brent's method within a reasonable bracket
+solution_final = root_scalar(func_final, bracket=[-10, 10], method='brentq')
+
+# Check if the solution was found
+if solution_final.converged:
+    print(f"Solution for x: {solution_final.root}")
+else:
+    print("No solution found.")
+
 
 
